@@ -91,7 +91,7 @@ def lstbooks(books):
 
 
 
-def test_empty (lst):
+def test_empty (lst_1, lst_2):
     assert slt.isEmpty(lst_1) == True
     assert slt.size(lst_1) == 0
     assert slt.isEmpty(lst_2) == True
