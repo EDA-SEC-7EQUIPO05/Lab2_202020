@@ -66,6 +66,35 @@ def loadCSVFile (file, sep=";"):
     print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
     return lst
 
+def loadCSVFile1 (file, sep=";"):
+    """
+    Carga un archivo csv a una lista
+    Args:
+        file
+            Archivo csv del cual se importaran los datos
+        sep = ";"
+            Separador utilizado para determinar cada objeto dentro del archivo
+        Try:
+        Intenta cargar el archivo CSV a la lista que se le pasa por parametro, si encuentra algun error
+        Borra la lista e informa al usuario
+    Returns: None  
+    """
+    #lst = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
+    lst = lt.newList() #Usando implementacion linkedlist
+    print("Cargando archivo ....")
+    t1_start = process_time() #tiempo inicial
+    dialect = csv.excel()
+    dialect.delimiter=sep
+    try:
+        with open(file, encoding="utf-8") as csvfile:
+            spamreader = csv.DictReader(csvfile, dialect=dialect)
+            for row in spamreader: 
+                lt.addLast(lst,row)
+    except:
+        print("Hubo un error con la carga del archivo")
+    t1_stop = process_time() #tiempo final
+    print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
+    return lst
 
 def printMenu():
     """
@@ -127,18 +156,25 @@ def main():
     Args: None
     Return: None 
     """
-    lista = lt.newList()   # se require usar lista definida
+    lista1 = lt.newList()   # se require usar lista definida
+    lista2= lt.newList()
     while True:
         printMenu() #imprimir el menu de opciones en consola
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
             if int(inputs[0])==1: #opcion 1
-                lista = loadCSVFile("Data/theMoviesdb/AllMoviesCastingRaw.csv") #llamar funcion cargar datos
-                print("Datos cargados, ",lista['size']," elementos cargados")
+                lista1 = loadCSVFile1 ("Data/theMoviesdb/AllMoviesCastingRaw.csv") #llamar funcion cargar datos
+                lista2 = loadCSVFile1 ("Data/theMoviesdb/AllMoviesDetailsCleaned.csv")
+                print("Datos cargados, ",lista1['size']," elementos cargados")
+                print("Datos cargados, ",lista2['size']," elementos cargados")
+                
             elif int(inputs[0])==2: #opcion 2
-                if lista==None or lista['size']==0: #obtener la longitud de la lista
-                    print("La lista esta vacía")    
-                else: print("La lista tiene ",lista['size']," elementos")
+                if lista1==None or lista1['size']==0 and lista2==None or lista2["size"]==0: #obtener la longitud de la lista
+                    print("La listas esta vacía")    
+                else: 
+                    print("La lista tiene ",lista1['size']," elementos")´
+                     print("La lista tiene ",lista2['size']," elementos")
+
             elif int(inputs[0])==3: #opcion 3
                 if lista==None or lista['size']==0: #obtener la longitud de la lista
                     print("La lista esta vacía")
