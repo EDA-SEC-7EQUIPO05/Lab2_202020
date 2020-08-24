@@ -140,8 +140,15 @@ def conocerUnDirector (lst1,lst2,nombre_director):
     """
     Retorna la cantidad de elementos que cumplen con un criterio para una columna dada
     """
+    lista = []
+    contador=0
+    promedio=0
+
+    for i in lst1:
+        if str(i["director_name"])==str(nombre_director):
+            lista.append(i)
     
-    return 0
+    return lista
 
 def orderElementsByCriteria(function, column, lst, elements):
     """
@@ -173,8 +180,8 @@ def main():
                 if lista1==None or lista1['size']==0 and lista2==None or lista2["size"]==0: #obtener la longitud de la lista
                     print("La listas estan vacías")    
                 else: 
-                    print("La lista tiene ",lista1['size']," elementos")´
-                     print("La lista tiene ",lista2['size']," elementos")
+                    print("La lista tiene ",lista1['size']," elementos")
+                    print("La lista tiene ",lista2['size']," elementos")
 
             elif int(inputs[0])==3: #opcion 3
                 if lista==None or lista['size']==0: #obtener la longitud de la lista
@@ -184,12 +191,12 @@ def main():
                     counter=countElementsFilteredByColumn(criteria, "nombre", lista) #filtrar una columna por criterio  
                     print("Coinciden ",counter," elementos con el crtierio: ", criteria  )
             elif int(inputs[0])==4: #opcion 4
-                if lista==None or lista['size']==0 and lista2==None or lista2["size"]==0: #obtener la longitud de la lista
+                if lista1==None or lista1['size']==0 and lista2==None or lista2["size"]==0: #obtener la longitud de la lista
                     print("Las listas estan vacías")
                 else:
-                    criteria =input('Ingrese el criterio de búsqueda\n')
-                    counter=countElementsByCriteria(criteria,0,lista)
-                    print("Coinciden ",counter," elementos con el crtierio: '", criteria ,"' (en construcción ...)")
+                    criteria =input('Ingrese el nombre del director\n')
+                    counter=conocerUnDirector(criteria,lista1,lista2)
+                    print(counter)
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
                 
