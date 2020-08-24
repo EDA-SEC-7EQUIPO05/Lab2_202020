@@ -136,17 +136,18 @@ def countElementsFilteredByColumn(criteria, column, lst):
         print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
     return counter
 
-def conocerUnDirector (lst1,lst2,nombre_director):
+def conocerUnDirector (criteria,lst1,lst2):
     """
     Retorna la cantidad de elementos que cumplen con un criterio para una columna dada
     """
     lista = []
+    lista1=[]
     contador=0
     promedio=0
 
-    for i in lst1:
-        if str(i["director_name"])==str(nombre_director):
-            lista.append(i)
+    for m in  lst1:
+        if m["director_name"]==criteria:
+            lista.append(m["id"])
     
     return lista
 
@@ -171,7 +172,7 @@ def main():
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
             if int(inputs[0])==1: #opcion 1
-                lista1 = loadCSVFile1 ("Data/theMoviesdb/AllMoviesCastingRaw.csv") #llamar funcion cargar datos
+                lista1 = loadCSVFile ("Data/theMoviesdb/AllMoviesCastingRaw.csv") #llamar funcion cargar datos
                 lista2 = loadCSVFile1 ("Data/theMoviesdb/AllMoviesDetailsCleaned.csv")
                 print("Datos cargados, ",lista1['size']," elementos cargados")
                 print("Datos cargados, ",lista2['size']," elementos cargados")
@@ -194,7 +195,7 @@ def main():
                 if lista1==None or lista1['size']==0 and lista2==None or lista2["size"]==0: #obtener la longitud de la lista
                     print("Las listas estan vacías")
                 else:
-                    criteria =input('Ingrese el nombre del director\n')
+                    criteria =str(input('Ingrese el nombre del director\n'))
                     counter=conocerUnDirector(criteria,lista1,lista2)
                     print(counter)
             elif int(inputs[0])==0: #opcion 0, salir
