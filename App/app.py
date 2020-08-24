@@ -145,6 +145,7 @@ def conocerUnDirector (criteria,lst1,lst2):
     contador=0
     promedio=0
 
+    t1_start = process_time()
     iterator=it.newIterator(lst1)
     while it.hasNext(iterator):
         element=it.next(iterator)
@@ -167,7 +168,9 @@ def conocerUnDirector (criteria,lst1,lst2):
     operacion=(promedio/contador)
 
     respuesta=("El director: ")+str(criteria)+(" ")+("dirigió las siguientes peliculas: ")+str(lista1)+(" ")+(" lo cual es un total de: ")+str(contador)+("peliculas")+(" ")+str("con un promedio de: ")+str(operacion)+(" ")+("en la votacion de sus peliculas")
-
+    t1_stop = process_time() #tiempo final
+    print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
+    
     return respuesta
         
 
