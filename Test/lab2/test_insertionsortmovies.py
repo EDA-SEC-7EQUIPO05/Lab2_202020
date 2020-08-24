@@ -41,10 +41,8 @@ def less(element1, element2):
 def greater(element1,element2)->tuple:
 
     if int(element1["id"])>int(element2["id"]):
-        respuesta=(element1,element2)
-    else:
-        respuesta=(element2,element1)
-    return respuesta
+        return True
+    return False
 
 def test_sort():
     """
