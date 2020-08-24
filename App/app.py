@@ -86,7 +86,7 @@ def loadCSVFile1 (file, sep=";"):
     dialect = csv.excel()
     dialect.delimiter=sep
     try:
-        with open(file, encoding="utf-8") as csvfile:
+        with open(file, encoding="utf-8-sig") as csvfile:
             spamreader = csv.DictReader(csvfile, dialect=dialect)
             for row in spamreader: 
                 lt.addLast(lst,row)
@@ -170,7 +170,7 @@ def main():
                 
             elif int(inputs[0])==2: #opcion 2
                 if lista1==None or lista1['size']==0 and lista2==None or lista2["size"]==0: #obtener la longitud de la lista
-                    print("La listas esta vacía")    
+                    print("La listas estan vacías")    
                 else: 
                     print("La lista tiene ",lista1['size']," elementos")´
                      print("La lista tiene ",lista2['size']," elementos")
