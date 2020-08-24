@@ -104,7 +104,7 @@ def printMenu():
     print("1- Cargar Datos")
     print("2- Contar los elementos de la Lista")
     print("3- Contar elementos filtrados por palabra clave")
-    print("4- Consultar elementos a partir de dos listas")
+    print("4- Consultar a un director")
     print("0- Salir")
 
 def countElementsFilteredByColumn(criteria, column, lst):
@@ -145,11 +145,31 @@ def conocerUnDirector (criteria,lst1,lst2):
     contador=0
     promedio=0
 
-    for m in  lst1:
-        if m["director_name"]==criteria:
-            lista.append(m["id"])
+    iterator=it.newIterator(lst1)
+    while it.hasNext(iterator):
+        element=it.next(iterator)
+        nombre=element.get("director_name")
+        if criteria==nombre:
+            id=element.get("id")
+            contador+=1
+            lista.append(id)
+
+    iterator2=it.newIterator(lst2)
+    while it.hasNext(iterator2):
+        element2=it.next(iterator2)
+        id2=element2.get("id")
+        if id2 in lista:
+            titulo=element2.get("original_title")
+            lista1.append(titulo)
+            calculo_promedio=element2.get("vote_average")
+            promedio+=float(calculo_promedio)
     
-    return lista
+    operacion=(promedio/contador)
+
+    respuesta=("El director: ")+str(criteria)+(" ")+("dirigió las siguientes peliculas: ")+str(lista1)+(" ")+(" lo cual es un total de: ")+str(contador)+("peliculas")+(" ")+str("con un promedio de: ")+str(operacion)+(" ")+("en la votacion de sus peliculas")
+
+    return respuesta
+        
 
 def orderElementsByCriteria(function, column, lst, elements):
     """
