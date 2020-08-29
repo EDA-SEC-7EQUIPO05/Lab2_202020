@@ -32,6 +32,9 @@ import csv
 from ADT import list as lt
 from DataStructures import listiterator as it
 from DataStructures import liststructure as lt
+from Sorting import selectionsort as ss
+from Sorting import insertionsort as Is
+from Sorting import shellsort as shs
 
 from time import process_time 
 
@@ -66,6 +69,18 @@ def loadCSVFile (file, sep=";"):
     print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
     return lst
 
+def less_greater(element1, element2, column, tipo_ordenamiento):
+    if tipo_ordenamiento==1:
+        if float(element1[column])<float(element2[column]):
+            return True
+        else:
+            return False
+    else:
+        if float(element1[column])>float(element2[column]):
+            return True
+        else:
+            return False
+
 
 def printMenu():
     """
@@ -76,6 +91,7 @@ def printMenu():
     print("2- Contar los elementos de la Lista")
     print("3- Contar elementos filtrados por palabra clave")
     print("4- Consultar elementos a partir de dos listas")
+    print("5- Consultar ranking de películas")
     print("0- Salir")
 
 def countElementsFilteredByColumn(criteria, column, lst):
@@ -113,11 +129,45 @@ def countElementsByCriteria(criteria, column, lst):
     """
     return 0
 
-def orderElementsByCriteria(function, column, lst, elements):
+def orderElementsByCriteria(function,column,lst,elements,cantidad):
     """
     Retorna una lista con cierta cantidad de elementos ordenados por el criterio
     """
-    return 0
+    if lst['size']==0:
+        print("La lista esta vacía")
+        return 0
+    
+    else:
+        tipo_ordenamiento=int(elements)
+        columna=None
+        if column=="1":
+            columna="vote_average"
+        else:
+            columna="vote_count"
+        iterator=it.newIterator(lst)
+        if function=="1":
+            t1_start = process_time()
+            ss.selectionSort(lst,less_greater,columna,tipo_ordenamiento)
+            t1_stop = process_time()
+            print("Tiempo de ejecución del ordenamiento SELECTION_SORT es de ",t1_stop-t1_start," segundos")
+        elif function=="2":
+            t1_start = process_time()
+            Is.insertionSort(lst,less_greater,columna,tipo_ordenamiento)
+            t1_stop = process_time()
+            print("Tiempo de ejecución del ordenamiento INSERTION_SORT es de ",t1_stop-t1_start," segundos")
+        else:
+            t1_start = process_time()
+            shs.shellSort(lst,less_greater,columna,tipo_ordenamiento)
+            t1_stop = process_time()
+            print("Tiempo de ejecución del ordenamiento SHELL_SORT es de ",t1_stop-t1_start," segundos")
+        i=int(cantidad)    
+        top=lt.subList(lst,lst["size"]-int(cantidad)+1,int(cantidad))
+        iterator_top=it.newIterator(top)
+        while it.hasNext(iterator_top):
+                elemento_top=it.next(iterator_top)
+                print(str(i)+". "+elemento_top["original_title"]+" con un "+columna+" de "+elemento_top[columna])
+                i-=1
+        return top
 
 def main():
     """
@@ -133,7 +183,7 @@ def main():
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
             if int(inputs[0])==1: #opcion 1
-                lista = loadCSVFile("Data/test.csv") #llamar funcion cargar datos
+                lista = loadCSVFile("Data/theMoviesdb/SmallMoviesDetailsCleaned.csv") #llamar funcion cargar datos
                 print("Datos cargados, ",lista['size']," elementos cargados")
             elif int(inputs[0])==2: #opcion 2
                 if lista==None or lista['size']==0: #obtener la longitud de la lista
@@ -153,6 +203,42 @@ def main():
                     criteria =input('Ingrese el criterio de búsqueda\n')
                     counter=countElementsByCriteria(criteria,0,lista)
                     print("Coinciden ",counter," elementos con el crtierio: '", criteria ,"' (en construcción ...)")
+            elif int(inputs[0])==5:
+                if lista==None or lista["size"]==0: #obtener la longitud de la lista
+                    print("La lista está vacía")
+                else:
+                    print("1. VOTE_AVERAGE\n2. VOTE_COUNT")
+                    column=input("Ingrese un número: ")
+                    while True:
+                        if column.isnumeric():
+                            if int(column) in range(1,3):
+                                break
+                        else:
+                            function=input("Ingrese una opción válida: ")   
+                    print("\n1. SELECTION_SORT\n2. INSERTION_SORT\n3. SHELL_SORT")
+                    function=input("Ingrese un número: ")
+                    while True:
+                        if function.isnumeric():
+                            if int(function) in range(1,4):
+                                break
+                        else:
+                            function=input("Ingrese una opción válida: ")
+                    cantidad=input("\nIngrese el número de péliculas a retornar, mínimo 10: ")
+                    while True:
+                        if cantidad.isnumeric():
+                            if int(cantidad) in range(10,lista["size"]+1):
+                                break
+                        else:
+                            cantidad=input("Ingrese una cantidad válida: ")             
+                    print("\n1. MEJORES/ASCENDENTE\n2. PEORES/DESCENDENTE")
+                    elements=input("Ingrese un número: ")
+                    while True:
+                        if elements.isnumeric():
+                            if int(elements) in range(1,3):
+                                break
+                        else:
+                            elements=input("Ingrese una opción válida: \n")        
+                    orderElementsByCriteria(function,column,lista,elements,cantidad)
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
                 
