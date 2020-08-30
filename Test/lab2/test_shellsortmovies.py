@@ -8,13 +8,17 @@ import csv
 #list_type = 'ARRAY_LIST'
 list_type = 'SINGLE_LINKED'
 
-lst_books = lt.newList(list_type)
-booksfile = cf.data_dir + 'GoodReads/books.csv'
+lst_movies = lt.newList(list_type)
+lst_movies1 = lt.newList(list_type)
+moviesfile = cf.data_dir + 'theMoviesdb/AllMoviesCastingRaw.csv'
+moviesfile1 = cf.data_dir + 'GoodReads/AllMoviesDetailsCleaned.csv'
 
 def setUp():
     print('Loading books')
-    loadCSVFile(booksfile, lst_books)
-    print(lst_books['size'])
+    loadCSVFile(moviesfile, lst_movies)
+    loadCSVFile1(moviesfile1, lst_movies1)
+    print(lst_movies['size'])
+    print(lst_movies1['size'])
 
 
 def tearDown():
@@ -26,11 +30,16 @@ def loadCSVFile(file, lst):
     for row in input_file:
         lt.addLast(lst, row)
 
+def loadCSVFile1(file, lst):
+    input_file = csv.DictReader(open(file, encoding = "utf-8-sig"))
+    for row in input_file:
+        lt.addLast(lst, row)
+
 def printList(lst):
     iterator = it.newIterator(lst)
     while it.hasNext(iterator):
         element = it.next(iterator)
-        print(element['goodreads_book_id'])
+        print(element['id'])
 
 def less(element1, element2):
     if int(element1['id']) < int(element2['id']):
@@ -48,19 +57,35 @@ def test_sort():
     Lista con elementos en orden aleatorio
     """
     print("sorting ....")
-    sort.shellSort(lst_books, less)
+    sort.shellSort(lst_movies, less)
+    sort.shellSort(lst_movies1, less)
 
 def test_loading_CSV_y_ordenamiento():
     """
     Prueba que se pueda leer el archivo y que despues de relizar el sort, el orden este correcto
     """
     setUp()
-    sort.shellSort(lst_books,less)
-    while not (lt.isEmpty(lst_books)):
-        x = int(lt.removeLast(lst_books)['goodreads_book_id'])
-        if not (lt.isEmpty(lst_books)):
-            y = int(lt.lastElement(lst_books)['goodreads_book_id'])
+    sort.shellSort(lst_movies,less)
+    while not (lt.isEmpty(lst_movies)):
+        x = int(lt.removeLast(lst_movies)['id'])
+        if not (lt.isEmpty(lst_movies)):
+            y = int(lt.lastElement(lst_movies)['id'])
         else:
             break
         assert x > y
+
+def test_loading_CSV_y_ordenamiento():
+    """
+    Prueba que se pueda leer el archivo y que despues de relizar el sort, el orden este correcto
+    """
+    setUp()
+    sort.shellSort(lst_movies1,less)
+    while not (lt.isEmpty(lst_movies1)):
+        x = int(lt.removeLast(lst_movies1)['id'])
+        if not (lt.isEmpty(lst_movies1)):
+            y = int(lt.lastElement(lst_movies1)['id'])
+        else:
+            break
+        assert x > y
+
 
